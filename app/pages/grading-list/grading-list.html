@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>打分进度</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="grading-list leader-page getting-started">
+  <ion-item-group padding>
+    <button block (click)="openValuator()" class="large">导师打分入口<br/> https://www.ibeatop.com/h5/valuator</button>
+  </ion-item-group>
+  <ion-item-group *ngFor="let schedule of schedules">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col width-50>{{schedule.name}}</ion-col>
+        <ion-col width-50 text-right>{{schedule.date}} {{schedule.time}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row center>
+        <ion-col offset-25>
+          <ion-row>
+            <ion-col width-25 text-center><span gray>评分</span></ion-col>
+            <ion-col width-25 text-center><span gray>评价</span></ion-col>
+            <ion-col width-25 text-center><span gray>签名</span></ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row center *ngFor="let team of schedule.team">
+        <ion-col width-25>
+          <ion-row>{{team.last_name}}{{team.first_name}}</ion-row>
+          <ion-row><span gray>{{team.code}}</span></ion-row>
+        </ion-col>
+        <ion-col width-75>
+          <ion-row center>
+            <ion-col width-25 text-center>
+              <ion-icon name="radio-button-on" [attr.primary]="(team.count.score + team.count.absent) ? '': null" [attr.gray]="(team.count.score + team.count.absent) ? null : ''"></ion-icon>
+            </ion-col>
+            <ion-col width-25 text-center>
+              <ion-icon name="radio-button-on" [attr.primary]="team.status >=2 ? '' : null" [attr.gray]="team.status >=2 ? null : ''"></ion-icon>
+            </ion-col>
+            <ion-col width-25 text-center>
+              <ion-icon name="radio-button-on" [attr.primary]="team.status == 3 ? '' : null" [attr.gray]="team.status == 3 ? null : ''"></ion-icon>
+            </ion-col>
+            <ion-col width-25>
+              <button clear class="group" (click)="openMemberGroupPage($event, team)">
+                <ion-icon name="people"></ion-icon>组员
+              </button>
+            </ion-col>
+            <div class="process-bg"></div>
+            <div class="process" *ngIf="team.count.score + team.count.absent" [style.width.%]="25 * (team.count.score + team.count.absent)/team.count.guest"></div>
+            <div class="process" *ngIf="team.status == 2" [style.width.%]="37.5"></div>
+            <div class="process" *ngIf="team.status == 3" [style.width.%]="50"></div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item-group>
+</ion-content>

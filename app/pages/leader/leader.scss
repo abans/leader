@@ -1,0 +1,49 @@
+.leader-page{
+  ion-row {
+    position: relative;
+  }
+  ion-row div.process-bg {
+    position: absolute;
+    z-index: 1;
+    top:15px;
+    left:12.5%;
+    border-bottom: 2px solid color($colors, gray, contrast);
+    width:50%;
+  }
+  ion-row div.process {
+    position: absolute;
+    z-index: 2;
+    top:15px;
+    left:12.5%;
+    width:0;
+    height:2px;
+    background-color: color($colors, primary, contrast);
+  }
+  ion-col .group {
+    height: auto; 
+    padding: 0;
+    padding-bottom: 4px;
+    margin: 0;
+  }
+  ion-col .button-icon-left ion-icon{
+    padding-right:0;
+  }
+  ion-grid {
+    padding-top:0!important; 
+    padding-bottom:0!important; 
+  }
+  ion-grid > ion-row{
+    border-bottom: 1px solid #e5e5e5;
+  }
+  ion-grid > ion-row + ion-row:last-child{
+    border: none;
+  }
+  ion-col {
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left:0;
+    padding-right:0;
+  }
+}

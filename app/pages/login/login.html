@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>登录</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="login">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        本工作台指导每日项目的执行，提醒领队相关注意事项，便于上传每日心得体会及照片，自动发送至家长处分享，也可以随时了解项目指导老师/寄宿家庭为本团学生打分的进度。
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row center>
+      <ion-col text-center>请输入您获得的团密码</ion-col>
+    </ion-row>
+    <ion-row class="login-code">
+      <input pattern="[0-9]*" type="text" maxlength="6" class="stealth" #codeInput [(ngModel)]="loginCode" (input)="handleCodeInput(codeInput)" (keyup)="handleCodeInput(codeInput)" (enter)="handleCodeInput(codeInput)" (blur)="handleCodeInput(codeInput)">
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput1 [(ngModel)]="loginCode1">
+      </ion-col>
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput2 [(ngModel)]="loginCode2">
+      </ion-col>
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput3 [(ngModel)]="loginCode3">
+      </ion-col>
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput4 [(ngModel)]="loginCode4">
+      </ion-col>
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput5 [(ngModel)]="loginCode5">
+      </ion-col>
+      <ion-col>
+        <input pattern="[0-9]*" type="text" maxlength="1" readonly text-center #codeInput6 [(ngModel)]="loginCode6">
+      </ion-col>
+    </ion-row>
+    <ion-row class="member-name">
+      <ion-col width-50>
+        <input type="text" text-center class="text-input" [(ngModel)]="lastName" placeholder="姓">
+      </ion-col>
+      <ion-col width-50>
+        <input type="text" text-center class="text-input" [(ngModel)]="firstName" placeholder="名">
+      </ion-col>
+    </ion-row>
+    <button block [disabled]="!loginCodeCorrect || !firstName || !lastName" (click)="login()">开始</button>
+  </ion-grid>
+</ion-content>

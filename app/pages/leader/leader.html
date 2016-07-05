@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{group.name}}</ion-title>
+    <ion-buttons end>
+      <button (click)="logout()">退出</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="getting-started leader-page">
+  <ion-item-group *ngIf="!ongoing && group.matters && group.matters[1] && group.matters[1][0]">
+    <ion-item-divider primary>
+      <ion-row>
+        <ion-col width-67>第 {{group.matters[1][0].sday}} 天注意事项</ion-col>
+        <ion-col width-33 text-right>{{group.matters[1][0].date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <button ion-item no-lines primary (click)="openNoteListPage($event)">
+      <ion-row center>
+        <ion-col class="preview">
+          <div class="preview">{{group.matters[1][0].warn}}</div>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-item-group>
+  <ion-item-group *ngIf="ongoing && todayNotes.length">
+    <ion-item-divider primary>
+      <ion-row>
+        <ion-col width-67>第 {{todayNotes[0].sday}} 天注意事项</ion-col>
+        <ion-col width-33 text-right>{{todayNotes[0].date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <button ion-item no-lines primary (click)="openNoteListPage($event)">
+      <ion-row center>
+        <ion-col class="preview">
+          <div class="preview">{{todayNotes[0].warn}}</div>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col width-67>领队心得</ion-col>
+        <ion-col width-33 text-right *ngIf="todayLearnedIndex >= 0 && learned && learned.length && learned[todayLearnedIndex]">{{learned[todayLearnedIndex].date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <button ion-item (click)="openLearnedDetailsPage($event, learned[todayLearnedIndex])" *ngIf="todayLearnedIndex >= 0 && learned && learned.length && learned[todayLearnedIndex].photo && learned[todayLearnedIndex].photo.length">
+      <ion-row center>
+        <ion-col width-25>
+          <div class="image" *ngIf="learned[todayLearnedIndex].photo && learned[todayLearnedIndex].photo.length"   [ngStyle]="{'background-image': 'url(' + learned[todayLearnedIndex].photo[0].path + ')'}"></div>
+        </ion-col>
+        <ion-col class="preview">
+          <div class="preview">
+            {{learned[todayLearnedIndex].experience}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </button>
+    <ion-grid *ngIf="todayLearnedIndex == -1 || !learned.length || !learned[todayLearnedIndex] || !learned[todayLearnedIndex].photo || !learned[todayLearnedIndex].photo.length">
+      <ion-row center>
+        <ion-col>
+          <ion-row>
+            <button block clear padding [disabled]="!ongoing" (click)="openLearnedDetailsPage($event, learned[todayLearnedIndex])">
+              <ion-icon name="add"></ion-icon>添加心得 
+            </button>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <button block clear gray (click) = "openLearnedListPage($event)">所有心得</button>
+    <ion-item-group *ngFor="let schedule of grading; let isLast=last">
+      <ion-item-group>
+        <ion-item-divider light>
+          <ion-row>
+            <ion-col width-50>{{schedule.name}}</ion-col>
+            <ion-col width-50 text-right>{{schedule.date}} {{schedule.time}}</ion-col>
+          </ion-row>
+        </ion-item-divider>
+        <ion-grid>
+          <ion-row center>
+            <ion-col offset-25>
+              <ion-row>
+                <ion-col width-25 text-center><span gray>评分</span></ion-col>
+                <ion-col width-25 text-center><span gray>评价</span></ion-col>
+                <ion-col width-25 text-center><span gray>签名</span></ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row center *ngFor="let team of schedule.team">
+            <ion-col width-25>
+              <ion-row>{{team.last_name}}{{team.first_name}}</ion-row>
+              <ion-row><span gray>{{team.code}}</span></ion-row>
+            </ion-col>
+            <ion-col width-75>
+              <ion-row center>
+                <ion-col width-25 text-center>
+                  <ion-icon name="radio-button-on" [attr.primary]="(team.count.score + team.count.absent) ? '': null" [attr.gray]="(team.count.score + team.count.absent) ? null : ''"></ion-icon>
+                </ion-col>
+                <ion-col width-25 text-center>
+                  <ion-icon name="radio-button-on" [attr.primary]="team.status >= 2 ? '' : null" [attr.gray]="team.status >= 2 ? null : ''"></ion-icon>
+                </ion-col>
+                <ion-col width-25 text-center>
+                  <ion-icon name="radio-button-on" [attr.primary]="team.status == 3 ? '' : null" [attr.gray]="team.status == 3 ? null : ''"></ion-icon>
+                </ion-col>
+                <ion-col width-25>
+                  <button clear class="group" (click)="openMemberGroupPage($event, team)">
+                    <ion-icon name="people"></ion-icon>组员
+                  </button>
+                </ion-col>
+                <div class="process-bg"></div>
+                <div class="process" *ngIf="team.count.score + team.count.absent" [style.width.%]="25 * (team.count.score + team.count.absent) / team.count.guest"></div>
+                <div class="process" *ngIf="team.status == 2" [style.width.%]="37.5"></div>
+                <div class="process" *ngIf="team.status == 3" [style.width.%]="50"></div>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item-group padding *ngIf="isLast">
+          <button block (click)="openValuator()" class="large">导师打分入口<br/> https://www.ibeatop.com/h5/valuator</button>
+        </ion-item-group>
+      </ion-item-group>
+    </ion-item-group>
+  </ion-item-group>
+  <div padding *ngIf="schedules && schedules.length">
+    <button block gray outline (click) = "openGradingListPage($event)">查看所有打分</button>
+  </div>
+</ion-content>

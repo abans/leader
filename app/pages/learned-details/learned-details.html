@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>心得详情</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="learned-details getting-started">
+  <ion-item-divider light>
+    <ion-row>
+      <ion-col width-67>心得</ion-col>
+    </ion-row>
+  </ion-item-divider>
+  <ion-item-group>
+    <ion-item>
+      <ion-textarea #input [(ngModel)]="learned.experience" placeholder="写些今天的心得，与孩子家长分享" (keyup)="handleInput(input)" (enter)="handleInput(input)" (blur)="handleInput(input)"></ion-textarea>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-divider light>
+    <ion-row>
+      <ion-col width-20>照片</ion-col>
+      <ion-col width-80 text-right>至少上传6张精选照片(须含集体照)</ion-col>
+    </ion-row>
+  </ion-item-divider>
+  <ion-item-group>
+    <ion-row padding>
+      <ion-col width-33 *ngFor="let photo of learned.photo; let i = index">
+        <div class="photo" [ngClass]="photo._id ? '' : 'uploader-status'"  [ngStyle]="{'background-image': 'url(' + photo.path + ')'}">
+          <ion-spinner *ngIf="!photo._id" name="bubbles"></ion-spinner>
+        </div>
+        <button clear danger (click)="removePhoto(i)">
+          <ion-icon name="close-circle"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col width-33 center *ngIf="!learned.photo || (learned.photo && learned.photo.length < maxCount)">
+        <div class="add-photo">
+          <div class="add-photo-icon">
+            <div text-center>
+              <ion-icon name="images" gray></ion-icon>
+            </div>
+            <div text-center><span gray>添加照片</span></div>
+          </div>
+        </div>
+        <input type="file" id="file-input" #input (change)="addPhoto(input)" multiple="">
+      </ion-col>
+    </ion-row>
+  </ion-item-group>
+  <div padding>
+    <button primary block (click)="submitLearned($event)" [disabled] = "!learned.experience|| !learned.photo || learned.photo.length < 6" >完成</button>
+  </div>
+  <div padding></div>
+</ion-content>

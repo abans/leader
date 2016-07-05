@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>所有心得</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="learned-list getting-started">
+  <ion-item-group *ngFor="let item of learned;let i = index">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col width-67>第 {{i+1}} 天</ion-col>
+        <ion-col width-33 text-right>{{item.date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <button ion-item (click)="openLearnedDetailsPage($event, item)" *ngIf="item.photo && item.photo.length">
+      <ion-row center>
+        <ion-col width-25>
+          <div class="image" *ngIf="item.photo && item.photo.length"   [ngStyle]="{'background-image': 'url(' + item.photo[0].path + ')'}"></div>
+        </ion-col>
+        <ion-col class="preview">
+          <div class="preview">
+            {{item.experience}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </button>
+    <button block clear padding (click)="openLearnedDetailsPage($event, item)" *ngIf="!item.photo || !item.photo.length">
+      <ion-icon name="add"></ion-icon>
+      添加心得 
+    </button>
+  </ion-item-group>
+</ion-content>

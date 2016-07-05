@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>注意事项列表</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="note-list getting-started">
+  <ion-item-group *ngIf="todayNotes.length">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col>{{todayNotes[0].date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-list inset>
+      <ion-grid *ngFor="let note of todayNotes">
+        <ion-row>
+          <ion-col width-25><span class="time" primary>{{note.time}}</span></ion-col>
+          <ion-col width-75 text-right><span primary>{{note.name}}</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col gray><span gray>执行细节:</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col primary>{{note.task}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col gray><span gray>注意事项:</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col primary>{{note.warn}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  </ion-item-group>
+  <ion-item-group *ngIf="tomorrowNotes.length;let i=index">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col>{{tomorrowNotes[0].date}}</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-list inset>
+      <ion-grid *ngFor="let note of tomorrowNotes;let i=index" [hidden]="!showTomorrowNotesAll && i>=2">
+        <ion-row>
+          <ion-col width-25><span class="time" primary>{{note.time}}</span></ion-col>
+          <ion-col width-75 text-right><span primary>{{note.name}}</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col gray><span gray>执行细节:</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col primary>{{note.task}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col gray><span gray>注意事项:</span></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col primary>{{note.warn}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+    <div class="more" [hidden]="showTomorrowNotesAll" *ngIf="tomorrowNotes.length > 2">
+      <ion-row>
+        <button block gray clear (click)="showTomorrowNotesAll=true">查看明天更多注意事项</button>
+      </ion-row>
+    </div>
+  </ion-item-group>
+  <ion-item-group *ngIf="afterTomorrowNotes.length" [hidden]="!showAfterTomorrowNotesAll">
+    <ion-item-group *ngFor="let notes of afterTomorrowNotes">
+      <ion-item-divider light>
+        <ion-row>
+          <ion-col>{{notes.data[0].date}}</ion-col>
+        </ion-row>
+      </ion-item-divider>
+      <ion-list inset>
+        <ion-grid *ngFor="let note of notes.data">
+          <ion-row>
+            <ion-col width-25><span class="time" primary>{{note.time}}</span></ion-col>
+            <ion-col width-75 text-right><span primary>{{note.name}}</span></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col gray><span gray>执行细节:</span></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col primary>{{note.task}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col gray><span gray>注意事项:</span></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col primary>{{note.warn}}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-list>
+    </ion-item-group>
+  </ion-item-group>
+  <ion-list inset [hidden]="showAfterTomorrowNotesAll" *ngIf="afterTomorrowNotes.length">
+    <button block gray outline (click)="showAfterTomorrowNotesAll=true">查看后面几天注意事项</button>
+  </ion-list>
+  <ion-col></ion-col>
+  <ion-col></ion-col>
+</ion-content>

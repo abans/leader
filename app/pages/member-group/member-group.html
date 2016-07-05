@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>小组成员</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="member-list getting-started">
+  <ion-item-group *ngIf="groupA.length">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col>缺席</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center width-33 *ngFor="let guest of groupA">
+          <button clear gray (click)="previewAvatar(guest)">
+            <ion-avatar>
+              <div class="avatar" *ngIf="guest._id.photo && guest._id.photo.length "  [ngStyle]="{'background-image': 'url(' + guest._id.photo[0] + ')'}"></div>
+              <div class="avatar" *ngIf="!guest._id.photo || !guest._id.photo.length "  [ngStyle]="{'background-image': 'url(./img/default.png)'}"></div>
+            </ion-avatar>
+            <div class="name">{{guest._id.name}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item-group>
+  <ion-item-group *ngIf="groupB.length">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col>未评价</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center width-33 *ngFor="let guest of groupB">
+          <button clear gray (click)="previewAvatar(guest)">
+            <ion-avatar>
+              <div class="avatar" *ngIf="guest._id.photo && guest._id.photo.length "  [ngStyle]="{'background-image': 'url(' + guest._id.photo[0] + ')'}"></div>
+              <div class="avatar" *ngIf="!guest._id.photo || !guest._id.photo.length "  [ngStyle]="{'background-image': 'url(./img/default.png)'}"></div>
+            </ion-avatar>
+            <div class="name">{{guest._id.name}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item-group>
+  <ion-item-group *ngIf="groupC.length">
+    <ion-item-divider light>
+      <ion-row>
+        <ion-col>已评价</ion-col>
+      </ion-row>
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center width-33 *ngFor="let guest of groupC">
+          <button clear gray (click)="previewAvatar(guest)">
+            <ion-avatar>
+              <div class="avatar" *ngIf="guest._id.photo && guest._id.photo.length "  [ngStyle]="{'background-image': 'url(' + guest._id.photo[0] + ')'}"></div>
+              <div class="avatar" *ngIf="!guest._id.photo || !guest._id.photo.length "  [ngStyle]="{'background-image': 'url(./img/default.png)'}"></div>
+            </ion-avatar>
+            <div class="name">{{guest._id.name}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item-group>
+  <div padding></div>
+  <div padding></div>
+</ion-content>
