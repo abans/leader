@@ -16,6 +16,7 @@ export class LearnedDetailsPage {
   maxWidth: number;
   maxCount: number;
   photoToBeDeleting: any;
+  hasPhotoIncomplete: boolean;
 
   constructor(private nav: NavController, public navParams:NavParams, public uploadService: UploadService) {
     this.learned = navParams.get('item'); 
@@ -25,8 +26,10 @@ export class LearnedDetailsPage {
     this.allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
     this.maxSize = 10 * 1024 * 1024;
     this.maxWidth = 1280;
-    this.maxCount = 30;
+    this.maxCount = 100;
+    this.hasPhotoIncomplete = true;
     this.photoToBeDeleting = [];
+    this.doesAllPhotoCompleted();
   }
 
   ionViewDidLeave() {
@@ -36,6 +39,7 @@ export class LearnedDetailsPage {
   addPhoto(input) {
     var reader = [];  // create empt array for readers
     for (var i = 0; i < input.files.length; i++) {
+      this.hasPhotoIncomplete = true;
       reader.push(new FileReader());
 
       if (this.allowTypes.indexOf(input.files[i].type) === -1) {
@@ -82,6 +86,7 @@ export class LearnedDetailsPage {
           handler: () => {
             this.photoToBeDeleting.push(this.learned.photo[index]);
             this.learned.photo.splice(index, 1);
+            this.doesAllPhotoCompleted();
             /*
             if(this.learned.photo[index].data) {
               this.learned.photo.splice(index, 1);
@@ -178,16 +183,42 @@ export class LearnedDetailsPage {
         let dataURL = canvas.toDataURL('image/jpeg', 0.8);
         let photo = {_id:'', data:'', path:dataURL};
         _self.learned.photo.push(photo);
-        _self.doUploadPhoto(dataURL, photo);
+        _self.doUploadPhoto(photo);
       }
     });
   }
 
-  doUploadPhoto(dataURL, photo) {
-    this.uploadService.uploadImages(dataURL)
+  reUploadPhoto(index) {
+    let photo = this.learned.photo[index]; 
+    photo.err = false;
+    this.hasPhotoIncomplete = true;
+    this.doUploadPhoto(photo);
+  }
+
+  doesAllPhotoCompleted() {
+    let photoCount = this.learned.photo.length;
+    this.learned.photo.forEach((photo) =>{
+      if(photo._id || photo.err) {
+          photoCount -= 1;
+      } 
+    }); 
+    if(photoCount == 0) {
+      this.hasPhotoIncomplete = false;
+    }
+  }
+
+  doUploadPhoto(photo) {
+    this.uploadService.uploadImages(photo.path)
     .then(data =>{
-        photo.data = data;
-        photo._id = photo.data.url.replace(/[^\d]/g,'');
+        this.response = data;
+        if(this.response.url) {
+          photo.data = data;
+          photo._id = photo.data.url.replace(/[^\d]/g,'');
+          photo.err = false; 
+        } else {
+          photo.err = true; 
+        }
+        this.doesAllPhotoCompleted();
     });
   }
 

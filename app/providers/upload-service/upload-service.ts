@@ -26,7 +26,9 @@ export class UploadService {
       .subscribe(data => {
           resolve(data);
         }, 
-        err => console.error(err),
+        err => {
+          resolve(err);
+        },
         () => console.log('Upload Complete') 
       );
     });
