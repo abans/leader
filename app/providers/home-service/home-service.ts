@@ -18,11 +18,7 @@ export class HomeService {
   /*
    *获取首页内容除了心得
    */
-  load(reload) {
-    if (this.data && !reload) {
-      return Promise.resolve(this.data);
-    }
-
+  load() {
     return new Promise(resolve => {
       this.http.get(this.api + 'yxbg/find_group?hash=' + this.hash)
         .map(res => res.json())
@@ -36,11 +32,7 @@ export class HomeService {
   /*
    *获取心得
    */
-  loadLearned(reload) {
-    if (this.learned && !reload) {
-      return Promise.resolve(this.data);
-    }
-
+  loadLearned() {
     return new Promise(resolve => {
       this.http.get(this.api + 'yxbg/xinde_list?hash=' + this.hash)
         .map(res => res.json())

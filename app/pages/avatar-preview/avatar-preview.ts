@@ -23,7 +23,6 @@ export class AvatarPreviewPage {
   }
 
   avatarLoaded() {
-    console.log('Loaded');
     this.loaded = true;
   }
 }

@@ -15,7 +15,6 @@ import * as moment from 'moment';
 })
 export class LeaderPage {
   learned: any;//领队心得
-  todayLearned: any;//领队心得
   todayLearnedIndex: any;
   today: string;
   tempDate: string;
@@ -29,12 +28,20 @@ export class LeaderPage {
   tomorrowNotes: any;
   afterTomorrowNotes: any;
   local: any;
+  loaded: boolean;
 
   constructor(public nav: NavController, 
               public config: Config,
               public homeService: HomeService) {
     this.nav = nav;
+    this.loaded = false;
+    this.local = new Storage(LocalStorage);
+    this.initializeParams();
+    this.initLearned();
     this.initializeLeaderPage();
+  }
+
+  initializeParams() {
     this.today = moment().format('YYYY-MM-DD');
     this.ongoing = false;
     this.grading = [];
@@ -43,17 +50,27 @@ export class LeaderPage {
     this.notes = {};
     this.tomorrowNotes = [];
     this.afterTomorrowNotes = [];
-    this.learned = [];
     this.group = {};
-    this.todayLearned = {};
+  }
+
+  initLearned() {
+    this.learned = [];
     this.todayLearnedIndex = -1;
-    this.local = new Storage(LocalStorage);
+  }
+
+  ionViewWillEnter() {
+    if(this.loaded) {
+      this.initializeLeaderPage();
+    }
   }
 
   initializeLeaderPage() {
     if(this.config.get('HASH')) {
-      this.homeService.load(0)// 0 : load,  1:reload
+      this.homeService.load()// 0 : load,  1:reload
       .then(data => {
+        if(this.loaded) {
+          this.initializeParams();
+        }
         this.group = data;
         if(!this.group.err && this.group) {
           if(this.group.schedule) {
@@ -94,8 +111,12 @@ export class LeaderPage {
   
   getLearned(start, end) {
       let diff = moment(end).diff(moment(start), 'days')
-      this.homeService.loadLearned(0)// 0 : load,  1:reload
+      this.homeService.loadLearned()// 0 : load,  1:reload
       .then(data => {
+        if(this.loaded) {
+          this.initLearned();
+        }
+        this.loaded = true;
         this.response = data; 
         if(!this.response.error) {
           for( var i = 0; i <= diff; i++) {
